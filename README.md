@@ -1,7 +1,7 @@
 # papers_of_codegen
 Some paper about code generation.
 
-If you have any papers you'd like to recommend, you can contact me at :mailbox_with_no_mail: 839808679@qq.com
+If you have any papers you'd like to recommend, you can contact me at :envelope: 839808679@qq.com
 
 
 
@@ -13,10 +13,10 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: Thu, 27 Jul 2023
 
-  :school: Author Affiliation：Huawei Cloud, Chinese Academy of Science, Peking University
+  :school: Author Affiliation : Huawei Cloud, Chinese Academy of Science, Peking University
 
+  :open_file_folder: Size: 15B
   
-
   
 
 
@@ -26,7 +26,7 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: Tue, 24 Jan 2023
 
-  :school: Author Affiliation：University of Maryland
+  :school: Author Affiliation : University of Maryland
   
   大型语言模型(LLMs)的发展促进了人类对工具的使用，但是也会导致更多的恶意攻击，如利用AI操控选举活动，制造假新闻，制造假数据，以及在学术写作和编码作业中作弊。让LLMs生成的文本有水印，可以极大程度的避免这些问题。
   
@@ -48,7 +48,7 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: Wed, 24 May 2023
 
-  :school: Author Affiliation：Seoul National University 2NAVER AI Lab 3NAVER Cloud
+  :school: Author Affiliation : Seoul National University 2NAVER AI Lab 3NAVER Cloud
 
   作者发现，以往对于文本的水印生成方法（如分成两组token，优先选择绿色token），对于代码生成任务来说不管用，因为模型输出的质量会受到严重影响。
   
@@ -56,11 +56,33 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
 ## 2.2 code debug
 - ### [Language Models Can Teach Themselves to Program Better](https://arxiv.org/pdf/2207.14502v4.pdf)
-- 
+  
   :date: Fri, 29 Jul 2022
 
-  :school: Author Affiliation：Microsoft Research, MIT
+  :school: Author Affiliation : Microsoft Research, MIT
+
+  作者尝试让 LM 自己生成数据（编程问题和答案），然后由 Python 解释器对编程问题和答案进行验证，以确保正确性，最后再用自己生成的数据来微调自己。（即，自己生成问题和答案，通过验证的数据，再用来微调自己）
   
+  以下是数据格式（第一张图是问题，第二张图是答案）：
+![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/a147f43f-3c1e-4b62-b6a8-ce52bb14fdaf)
+
+  步骤：
+  
+  1、生成问题：问题是从训练集中随机抽取一组问题并将其拼接在一起，只有问题没有解决方案。然后提示 LM 生成与小型训练集类似的问题，由此来生成额外的问题。在检查生成的问题的语法有效性后，过滤删除一部分问题。
+  
+  2、生成答案：使用 few-shot learning 让 LM 来生成解决方案。
+
+  3、验证解决方案。使用 python 解释器验证生成的解决方案。这一步骤不仅要求答案是正确的，还要求解决方案能在一定的时间内完成（时间复杂度不能太高）。
+
+  4、微调。LM 在这个过滤后的问题-解决方案对的合成数据集上进行了微调。
+
+  5、重复以上步骤。
+  
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/ca0ba0a6-ac8e-4658-ae73-70d1b4dac1da)
+
+  实验结果：
+  
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/16e6daa4-a86f-4000-914d-10c6d577b5ca)
 
 # 三、评测相关论文（Papers Related to Review）
 ## 3.1 新的评测框架
@@ -68,7 +90,7 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: Tue, 2 May 2023
   
-  :school: Author Affiliation：University of Illinois Urbana-Champaign Nanjing University
+  :school: Author Affiliation : University of Illinois Urbana-Champaign Nanjing University
 
   作者发现现有的 LLM-for-code benchmarks 存在以下共同的局限性:
 
@@ -91,7 +113,7 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: 2017
   
-  :school: Author Affiliation：Google Brain, Google Research, University of Toronto
+  :school: Author Affiliation : Google Brain, Google Research, University of Toronto
   
   主要优势：
   - 1、简单，完全基于注意力机制，没有递归和卷积；
@@ -102,7 +124,7 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: 2018
   
-  :school: Author Affiliation：Google AI Language
+  :school: Author Affiliation : Google AI Language
 
   BERT是一种预训练语言模型，它基于Transformer架构，通过在大规模语料库上进行无监督训练，可以实现在各种 NLP 任务上的微调，比如文本分类、问答系统和命名实体识别等。
 
@@ -110,7 +132,7 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: 2018
   
-  :school: Author Affiliation：OpenAI
+  :school: Author Affiliation : OpenAI
 
   GPT-1 是一个相当经典的自回归语言模型, 并且他是生成式(Generative)的无监督方式预训练(Pre-Train)模型。GPT-1 是 OpenAI 开发的第一个基于 transformer 架构的大型语言模型。它于2018年6月发布，是当时最大的语言模型之一，使用了 40 亿个参数进行训练。
   
@@ -118,7 +140,7 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: 2019
   
-  :school: Author Affiliation：OpenAI
+  :school: Author Affiliation : OpenAI
 
   GPT-1 的问题 ： fine-tune 只能用到特定任务中，如果 fine-tune 一个分类任务，不能用到句子相似度中去。OPENAI 希望用一个模型做所有 NLP 的任务，尽量做所有的任务。
 
@@ -130,7 +152,7 @@ If you have any papers you'd like to recommend, you can contact me at :mailbox_w
 
   :date: 2020
   
-  :school: Author Affiliation：OpenAI
+  :school: Author Affiliation : OpenAI
 
   GPT-3 提出了上下文学习（In Context Learning）的概念，根据上下文包含的任务样本数量，分成了 Zero-Shot（无任务样本）、One-Shot（仅一个任务样本）和 Few-Shot（多个任务样本）三类。
 
