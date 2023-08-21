@@ -7,7 +7,16 @@ If you have any papers you'd like to recommend, you can contact me at :envelope:
 
 # 一、大模型汇总（LLMs Summary）
 ## 1.1 开源模型
+- ### [CodeT5: Identifier-aware Unified Pre-trained Encoder-Decoder Models for Code Understanding and Generation](https://arxiv.org/pdf/2109.00859.pdf)
 
+  :date: Thu, 2 Sep 2021
+
+  :school: Author Affiliation : Salesforce Research Asia, Nanyang Technological University(Singapore)
+
+  :open_file_folder: Model Size: CodeT5-small (60M) , CodeT5-base (220M)
+
+  
+  
 ## 1.2 闭源模型
 - ### [PANGU-CODER2: BOOSTING LARGE LANGUAGE MODELS FOR CODE WITH RANKING FEEDBACK](https://arxiv.org/pdf/2307.14936.pdf)
 
@@ -15,7 +24,7 @@ If you have any papers you'd like to recommend, you can contact me at :envelope:
 
   :school: Author Affiliation : Huawei Cloud, Chinese Academy of Science, Peking University
 
-  :open_file_folder: Size: 15B
+  :open_file_folder: Model Size: 15B
   
   
 
@@ -33,12 +42,12 @@ If you have any papers you'd like to recommend, you can contact me at :envelope:
   作者提出了一种有效的水印，可以在短跨度的token（少至 25 个token）中检测到合成文本，而误报（人类文本被标记为机器生成）在统计上是不可能的。水印检测算法可以被公开，使第三方（例如社交媒体平台）能够自行运行，也可以保持私有，并在 API 上运行。
 
   该水印有以下特性：
-  - 1、水印检测不需要通过调用  LLM API 或者获知 LLM 参数就可以实现模型
-  - 2、不需要额外训练就以对文本添加水印
-  - 3、即便只有很小的一段生成文本，水印也可以被检测
-  - 4、除非大幅修改生成文本，水印无法被移除
-  - 5、针对水印检测，可以计算出一个严格的统计量
-  - 6、水印对人类肉眼来说是不可见的
+  1. 水印检测不需要通过调用  LLM API 或者获知 LLM 参数就可以实现模型
+  2. 不需要额外训练就以对文本添加水印
+  3. 即便只有很小的一段生成文本，水印也可以被检测
+  4. 除非大幅修改生成文本，水印无法被移除
+  5. 针对水印检测，可以计算出一个严格的统计量
+  6. 水印对人类肉眼来说是不可见的
 
   作者提出的两种水印方法：hard watermarking 和 a more sophisticated watermark。
 
@@ -62,27 +71,16 @@ If you have any papers you'd like to recommend, you can contact me at :envelope:
   :school: Author Affiliation : Microsoft Research, MIT
 
   作者尝试让 LM 自己生成数据（编程问题和答案），然后由 Python 解释器对编程问题和答案进行验证，以确保正确性，最后再用自己生成的数据来微调自己。（即，自己生成问题和答案，通过验证的数据，再用来微调自己）
-  
-  以下是数据格式（第一张图是问题，第二张图是答案）：
-![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/a147f43f-3c1e-4b62-b6a8-ce52bb14fdaf)
 
   步骤：
-  
-  1、生成问题：问题是从训练集中随机抽取一组问题并将其拼接在一起，只有问题没有解决方案。然后提示 LM 生成与小型训练集类似的问题，由此来生成额外的问题。在检查生成的问题的语法有效性后，过滤删除一部分问题。
-  
-  2、生成答案：使用 few-shot learning 让 LM 来生成解决方案。
-
-  3、验证解决方案。使用 python 解释器验证生成的解决方案。这一步骤不仅要求答案是正确的，还要求解决方案能在一定的时间内完成（时间复杂度不能太高）。
-
-  4、微调。LM 在这个过滤后的问题-解决方案对的合成数据集上进行了微调。
-
-  5、重复以上步骤。
+  1. 生成问题：问题是从训练集中随机抽取一组问题并将其拼接在一起，只有问题没有解决方案。然后提示 LM 生成与小型训练集类似的问题，由此来生成额外的问题。在检查生成的问题的语法有效性后，过滤删除一部分问题。
+  2. 生成答案：使用 few-shot learning 让 LM 来生成解决方案。
+  3. 验证解决方案。使用 python 解释器验证生成的解决方案。这一步骤不仅要求答案是正确的，还要求解决方案能在一定的时间内完成（时间复杂度不能太高）。
+  4. 微调。LM 在这个过滤后的问题-解决方案对的合成数据集上进行了微调。
+  5. 重复以上步骤。
   
   ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/ca0ba0a6-ac8e-4658-ae73-70d1b4dac1da)
 
-  实验结果：
-  
-  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/16e6daa4-a86f-4000-914d-10c6d577b5ca)
 
 # 三、评测相关论文（Papers Related to Review）
 ## 3.1 新的评测框架
@@ -94,8 +92,8 @@ If you have any papers you'd like to recommend, you can contact me at :envelope:
 
   作者发现现有的 LLM-for-code benchmarks 存在以下共同的局限性:
 
-  - 1、测试不充分。只能为每个编码问题平均包含不到 10 个测试。此外，这些测试相对来说过于简单，无法充分探索代码的功能或角落案例。
-  - 2、问题描述不精确。代码生成的输入,除了函数签名外，还包括自然语言描述。现有 benchmarks 中的这些任务描述往往过于模糊，无法完全阐明预期的程序行为。例如，输入文档可能没有指定预期的输入域（例如，只有正整数）或函数应如何处理异常。因此，LLM 对此类编程问题的解释可能与实际测试不同，导致有能力的LLM被误判。
+  1. 测试不充分。只能为每个编码问题平均包含不到 10 个测试。此外，这些测试相对来说过于简单，无法充分探索代码的功能或角落案例。
+  2. 问题描述不精确。代码生成的输入,除了函数签名外，还包括自然语言描述。现有 benchmarks 中的这些任务描述往往过于模糊，无法完全阐明预期的程序行为。例如，输入文档可能没有指定预期的输入域（例如，只有正整数）或函数应如何处理异常。因此，LLM 对此类编程问题的解释可能与实际测试不同，导致有能力的LLM被误判。
   
   作者建立了一个新的评估框架—— EvalPlus，用于改进现有的 code benchmarks，以更严格的标准来评估LLM生成代码的功能正确性。EvalPlus 扩展了 HUMANEVAL benchmarks，创建了 HUMANEVAL+，将测试用例规模提高了81倍。
   EvalPlus 把原始数据集的 ground-truth（真实代码）、作为示范的测试用例的输入和专门的指令来构建一个 prompt，以查询 ChatGPT 并生成一组高质量的种子输入。从这些种子输入开始，执行类型感知突变，快速生成大量新输入和种子输入。
@@ -116,9 +114,9 @@ If you have any papers you'd like to recommend, you can contact me at :envelope:
   :school: Author Affiliation : Google Brain, Google Research, University of Toronto
   
   主要优势：
-  - 1、简单，完全基于注意力机制，没有递归和卷积；
-  - 2、速度快，并行性更高，需要的训练时间也大大减少；
-  - 3、效果好。
+  1. 简单，完全基于注意力机制，没有递归和卷积；
+  2. 速度快，并行性更高，需要的训练时间也大大减少；
+  3. 效果好。
     
 - ### [BERT : Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/pdf/1810.04805.pdf)
 
@@ -156,9 +154,9 @@ If you have any papers you'd like to recommend, you can contact me at :envelope:
 
   GPT-3 提出了上下文学习（In Context Learning）的概念，根据上下文包含的任务样本数量，分成了 Zero-Shot（无任务样本）、One-Shot（仅一个任务样本）和 Few-Shot（多个任务样本）三类。
 
-  - Zero-shot，给出任务描述和提示；
-  - One-shot，给出任务描述、一个示例样本和提示；
-  - Few-shot，给出任务描述、多个示例样本和提示，示例样本数在10至100之间；
+  1. Zero-shot，给出任务描述和提示；
+  2. One-shot，给出任务描述、一个示例样本和提示；
+  3. Few-shot，给出任务描述、多个示例样本和提示，示例样本数在10至100之间；
 
   模型在推理阶段，根据上下文进行推理给出输出。
 
