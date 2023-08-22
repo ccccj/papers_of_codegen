@@ -1,9 +1,22 @@
 # papers_of_codegen [![My github](https://skillicons.dev/icons?i=github)](https://github.com/ccccj/papers_of_codegen) 
 
-
 Some paper about code generation.
 
 > If you have any papers you'd like to recommend, you can contact me at :envelope: 839808679@qq.com
+
+- [papers\_of\_codegen ](#papers_of_codegen-)
+- [一、大模型汇总（LLMs Summary）](#一大模型汇总llms-summary)
+  - [1.1 开源模型](#11-开源模型)
+  - [1.2 闭源模型](#12-闭源模型)
+  - [表格汇总](#表格汇总)
+- [二、Code 论文（Recent Innovative Papers）](#二code-论文recent-innovative-papers)
+  - [2.1 模型水印](#21-模型水印)
+  - [2.2 code debug](#22-code-debug)
+  - [2.3 tokenization](#23-tokenization)
+- [三、评测相关论文（Papers Related to Review）](#三评测相关论文papers-related-to-review)
+  - [3.1 评测框架](#31-评测框架)
+- [四、NLP相关论文](#四nlp相关论文)
+  - [4.1 基础论文](#41-基础论文)
 
 
 
@@ -16,6 +29,19 @@ Some paper about code generation.
   :school: Author Affiliation : Salesforce AI Research
 
   :open_file_folder: Model Size: 220M, 770M, 2B, 6B, 16B
+
+- ### [PolyCoder: A SYSTEMATIC EVALUATION OF LARGE LANGUAGE MODELS OF CODE](https://arxiv.org/pdf/2202.13169.pdf)
+  
+  :date: Sat, 26 Feb 2022
+
+  :school: Author Affiliation : Carnegie Mellon University
+
+  :open_file_folder: Model Size: 160M, 400M, 2.7B
+
+  作者对跨不同编程语言的现有 code 模型——Codex、GPT-J、GPT-Neo、GPT-NeoX 和 CodeParrot 进行了系统评估。他们希望通过比较这些模型来进一步了解代码建模设计决策的前景，并指出关键的缺失一环，即迄今为止，没有大规模开源语言模型专门针对**多编程语言的代码**进行训练。
+  作者发现，不同语言的语料会对彼此有提示作用，用单一语言预料训练的模型（如CodeParrot），即使增大参数量，效果也不提升，侧面印证了上面的结论。
+
+  同时，作者推出了三个此类模型，参数量从 160M 到 2.7B，命名为「PolyCoder」，并开源了该模型和数据集。
   
 - ### [CodeT5: Identifier-aware Unified Pre-trained Encoder-Decoder Models for Code Understanding and Generation](https://arxiv.org/pdf/2109.00859.pdf)
 
@@ -44,13 +70,57 @@ Some paper about code generation.
 
   :open_file_folder: Model Size: 15B
   
-- ### [Textbooks Are All You Need](https://arxiv.org/pdf/2306.11644.pdf)
+- ### [phi-1: Textbooks Are All You Need](https://arxiv.org/pdf/2306.11644.pdf)
 
   :date: Tue, 20 Jun 2023
   
   :school: Author Affiliation : Microsoft Research
 
   :open_file_folder: Model Size: 1.3B
+
+## 表格汇总
+
+|Model|Model Size|HumanEval pass@1|HumanEval pass@10|HumanEval pass@100|MBPP pass@1|public|
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|LaMDA|137B|14.0|-|47.3|-|:negative_squared_cross_mark:|
+|AlphaCode|1.1B|17.1|28.2|45.3|-|:negative_squared_cross_mark:|
+|MIM|1.3B|22.4|41.7|53.8|-|:negative_squared_cross_mark:|
+|MIM|2.7B|30.7|48.2|69.6|-|:negative_squared_cross_mark:|
+|PaLM|8B|3.6|-|18.7|-|:negative_squared_cross_mark:|
+|PaLM|62B|15.9|-|46.3|-|:negative_squared_cross_mark:|
+|PaLM|540B|26.2|-|76.2|-|:negative_squared_cross_mark:|
+|PaLM-Coder|540B|36.0|-|88.4|47.0|:negative_squared_cross_mark:|
+|Codex|2.5B|21.4|35.4|59.5|-|:negative_squared_cross_mark:|
+|Codex|12B|28.8|46.8|72.3|-|:negative_squared_cross_mark:|
+|code-cushman-001|-|33.5|54.3|77.4|-|:negative_squared_cross_mark:|
+|code-davinci-002|-|47.0|74.9|92.1|-|:negative_squared_cross_mark:|
+|GPT-3.5|-|48.1|-|-|-|:negative_squared_cross_mark:|
+|GPT-4|-|67.0|-|-|-|:negative_squared_cross_mark:|
+|GPT-Neo|2.7B|6.4|11.3|21.4|-|:white_check_mark:|
+|GPT-J|6B|11.6|15.7|27.7|-|:white_check_mark:|
+|GPT-NeoX|20B|15.4|25.6|41.2|-|:white_check_mark:|
+|InCoder|1.3B|8.9|16.7|25.6|-|:white_check_mark:|
+|InCoder|6B|15.2|27.8|47.0|-|:white_check_mark:|
+|CodeGeeX|13B|22.9|39.6|60.9|24.4|:white_check_mark:|
+|LLaMA|7B|10.5|-|36.5|-|:white_check_mark:|
+|LLaMA|13B|15.8|-|52.5|-|:white_check_mark:|
+|LLaMA|33B|21.7|-|70.7|-|:white_check_mark:|
+|LLaMA|65B|23.7|-|79.3|-|:white_check_mark:|
+|Replit|3B|21.9|-|-|-|:white_check_mark:|
+|StarCoder|15B|33.6|-|-|52.7|:white_check_mark:|
+|CodeGen-mono|2B|23.7|36.6|57.0|-|:white_check_mark:|
+|CodeGen-mono|6B|26.1|42.3|65.8|-|:white_check_mark:|
+|CodeGen-mono|16B|29.3|49.9|75.0|-|:white_check_mark:|
+|CodeT5+|220M|12.0|20.7|31.6|-|:white_check_mark:|
+|CodeT5+|770M|15.5|27.2|42.7|-|:white_check_mark:|
+|CodeT5+|2B|24.2|38.2|57.8|-|:white_check_mark:|
+|CodeT5+|6B|28.0|47.2|69.8|-|:white_check_mark:|
+|CodeT5+|16B|30.9|51.6|76.7|-|:white_check_mark:|
+|InstructCodeT5+|16B|35.0|54.5|77.9|-|:white_check_mark:|
+|StarCoder (prompted)|15B|40.8|-|-|49.5|:white_check_mark:|
+|CodeGen-mono w/ CodeT|16B|36.7|59.3|-|-|:white_check_mark:|
+|CodeT5+ w/ CodeT|16B|38.5|63.6|77.1|-|:white_check_mark:|
+|InstructCodeT5+ w/ CodeT|16B|42.9|67.8|78.7|-|:white_check_mark:|
 
 
 # 二、Code 论文（Recent Innovative Papers）
