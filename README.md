@@ -2,13 +2,14 @@
 
 Some paper about code generation.
 
+
 > If you have any papers you'd like to recommend, you can contact me at :envelope: 839808679@qq.com
 
 - [papers\_of\_codegen ](#papers_of_codegen-)
 - [一、大模型汇总（LLMs Summary）](#一大模型汇总llms-summary)
   - [1.1 开源模型](#11-开源模型)
   - [1.2 闭源模型](#12-闭源模型)
-  - [表格汇总](#表格汇总)
+  - [1.3 表格汇总](#13-表格汇总)
 - [二、Code 论文（Recent Innovative Papers）](#二code-论文recent-innovative-papers)
   - [2.1 模型水印](#21-模型水印)
   - [2.2 code debug](#22-code-debug)
@@ -78,24 +79,33 @@ Some paper about code generation.
 
   :open_file_folder: Model Size: 1.3B
 
-## 表格汇总
+  phi-1，规模明显小于其他同类模型，拥有 1.3B 参数。尽管规模很小，但 phi-1 在 HumanEval 和 MBPP 中的 pass@1 分别达到了 50.6% 和 55.5%。作者在这篇论文中主要使用的方法就是提高数据质量。作者认为，大家普遍使用的一些数据源并不是教模型学习如何推理和规划算法的最佳来源，所以作者主要讲述了如何整理数据。
+
+  在论文中，作者主要用到的三个数据集：
+  1. 一个经过过滤的 code 数据集，它是 The Stack 和 StackOverflow 的子集，通过分类器获得（6B大小）（由 GPT-4 对 code 生成注释得到的数据，来训练该分类器）；
+  2. 合成的教科书数据集，小于1B，由 GPT-3.5 生成的 Python 教科书组成（作者在该数据集中引入了随机性，但具体 prompt 没说）；
+  3. 一个小型的合成练习题数据集，由  Python 练习题和答案组成，大约180M，也是由 GPT-3.5 生成的（让GPT-3.5生成样例的提示工程不清楚）。
+
+  为了排除 CodeExercises 数据集的污染，造成 HumanEval 评分很高的因素，作者的团队以与 HumanEval 相同的格式创建了 50 个不太可能出现在现实世界代码库或编码练习中的新问题，并用 GPT-4 给解决方案打分的。另外还删除与 HumanEval 中 "相似 "的文件来修剪 CodeExercises 数据集，发现重新训练后的 phi-1 仍然优于 StarCoder。。
+  
+## 1.3 表格汇总
 
 |Model|Model Size|HumanEval pass@1|HumanEval pass@10|HumanEval pass@100|MBPP pass@1|public|
 |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|LaMDA|137B|14.0|-|47.3|-|:negative_squared_cross_mark:|
-|AlphaCode|1.1B|17.1|28.2|45.3|-|:negative_squared_cross_mark:|
-|MIM|1.3B|22.4|41.7|53.8|-|:negative_squared_cross_mark:|
-|MIM|2.7B|30.7|48.2|69.6|-|:negative_squared_cross_mark:|
-|PaLM|8B|3.6|-|18.7|-|:negative_squared_cross_mark:|
-|PaLM|62B|15.9|-|46.3|-|:negative_squared_cross_mark:|
-|PaLM|540B|26.2|-|76.2|-|:negative_squared_cross_mark:|
-|PaLM-Coder|540B|36.0|-|88.4|47.0|:negative_squared_cross_mark:|
-|Codex|2.5B|21.4|35.4|59.5|-|:negative_squared_cross_mark:|
-|Codex|12B|28.8|46.8|72.3|-|:negative_squared_cross_mark:|
-|code-cushman-001|-|33.5|54.3|77.4|-|:negative_squared_cross_mark:|
-|code-davinci-002|-|47.0|74.9|92.1|-|:negative_squared_cross_mark:|
-|GPT-3.5|-|48.1|-|-|-|:negative_squared_cross_mark:|
-|GPT-4|-|67.0|-|-|-|:negative_squared_cross_mark:|
+|LaMDA|137B|14.0|-|47.3|-|:white_large_square:|
+|AlphaCode|1.1B|17.1|28.2|45.3|-|:white_large_square:|
+|MIM|1.3B|22.4|41.7|53.8|-|:white_large_square:|
+|MIM|2.7B|30.7|48.2|69.6|-|:white_large_square:|
+|PaLM|8B|3.6|-|18.7|-|:white_large_square:|
+|PaLM|62B|15.9|-|46.3|-|:white_large_square:|
+|PaLM|540B|26.2|-|76.2|-|:white_large_square:|
+|PaLM-Coder|540B|36.0|-|88.4|47.0|:white_large_square:|
+|Codex|2.5B|21.4|35.4|59.5|-|:white_large_square:|
+|Codex|12B|28.8|46.8|72.3|-|:white_large_square:|
+|code-cushman-001|-|33.5|54.3|77.4|-|:white_large_square:|
+|code-davinci-002|-|47.0|74.9|92.1|-|:white_large_square:|
+|GPT-3.5|-|48.1|-|-|-|:white_large_square:|
+|GPT-4|-|67.0|-|-|-|:white_large_square:|
 |GPT-Neo|2.7B|6.4|11.3|21.4|-|:white_check_mark:|
 |GPT-J|6B|11.6|15.7|27.7|-|:white_check_mark:|
 |GPT-NeoX|20B|15.4|25.6|41.2|-|:white_check_mark:|
@@ -151,7 +161,7 @@ Some paper about code generation.
 
   :date: Wed, 24 May 2023
 
-  :school: Author Affiliation : Seoul National University 2NAVER AI Lab 3NAVER Cloud
+  :school: Author Affiliation : Seoul National University, NAVER AI Lab, NAVER Cloud
 
   作者发现，以往对于文本的水印生成方法（如分成两组token，优先选择绿色token），对于代码生成任务来说不管用，因为模型输出的质量会受到严重影响。
   
