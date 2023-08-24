@@ -2,7 +2,6 @@
 
 Some paper about code generation.
 
-
 > If you have any papers you'd like to recommend, you can contact me at :envelope: 839808679@qq.com
 
 
@@ -154,6 +153,25 @@ Some paper about code generation.
   在这项工作中，作者提出了一种新的水印方法 —— SWEET（Selective WatErmarking via Entropy Thresholding），作者不对代码输出中的每个token应用绿-红规则，而是只选择性地将水印应用于熵值足够高、超过规定阈值的 token。这种选择性水印方法不会对 gold tokens 应用绿-红规则，以防止它们落入红色组，因此不会出现上述问题。
 
 ## 2.2 code debug
+- ### [Teaching Large Language Models to Self-Debug](https://arxiv.org/pdf/2304.05128.pdf)
+  
+  :date: Tue, 11 Apr 2023
+
+  :school: Author Affiliation : Google Research, UC Berkeley
+
+  作者证明了 Self-Debug 可以教会大型语言模型执行小黄鸭调试法————在程序的调试或测试过程中，写代码的人耐心地向小黄鸭解释每一行程序的作用，以此来激发灵感与发现矛盾，即，自言自语解释程序来找到 bug。也就是在没有任何关于代码正确性或错误消息的反馈的情况下，模型能够通过用自然语言解释来识别代码中的错误。具体步骤如下：
+  1. 模型生成新代码，然后执行代码并让模型解释代码（当没有单元测试时，反馈信息可以纯粹基于代码解释）;
+  2. 代码解释和执行结果构成反馈信息，然后反馈信息被发送回模型以执行更多的调试步骤。
+
+![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/84a9d187-1420-4f66-b87b-b94ec7bbb0f0)
+
+  在作者的实验中，作者使用用预训练的大型语言模型（code-davinci-002），无需进行微调。根据问题描述，模型首先预测候选程序，然后推断程序的正确性，并为后续调试步骤生成反馈信息。当反馈信息表明预测正确或达到允许的最大调试次数时，调试过程结束。作者设计了三种不同的反馈信息：
+  1. SELF-DEBUGGING with Simple Feedback
+  2. SELF-DEBUGGING with Unit Tests (UT)
+  3. SELF-DEBUGGING via Code Explanation (Expl.)
+
+  在没有单元测试来验证预测正确性的 Spider benchmark 上，带有代码解释的自调试持续将 baseline 提高了 2−3%，并将最难标签问题的预测精度提高了 9%。在可进行单元测试的 TransCoder 和 MBPP 上，自调试可将基线准确度提高高达 12%。同时，通过利用反馈消息和重用失败的预测，SELFDEBUGGING 显着提高了样本效率，并且可以匹配或优于生成超过 10 倍候选程序的 baseline 模型。
+  
 - ### [Language Models Can Teach Themselves to Program Better](https://arxiv.org/pdf/2207.14502v4.pdf)
   
   :date: Fri, 29 Jul 2022
@@ -200,9 +218,22 @@ Some paper about code generation.
 
   虽然作者实验中性能确实不错，但这种方法只适用于提供了测试样例的情景（如算法竞赛、oj等等）。
 
+## 2.5 Code 辅助信息
+- ### [Repository-Level Prompt Generation for Large Language Models of Code](https://arxiv.org/pdf/2206.12839.pdf)  【ICML 2023】
 
+  :date: Sun, 26 Jun 2022
+  
+  :school: Author Affiliation : Mila, Université de Montréal, Google, CIFAR Associate Fellow, McGill University
 
-## 2.5 code representation
+  这篇论文研究的场景是，类似于 copilot 那样的，用户在输入，模型去预测用户后面可能想输入什么内容。
+
+  作者认为，模型给用户的提示中的相关上下文不仅可以来自当前文件，还可以来自外部，如 import、父类、同一目录下的文件和 API 文档。此外，根据具体情况，相关上下文可能分散在多个位置。由于 LLM 可用于提示的上下文长度有限，选择相关上下文变得越来越重要。作者提出了一个名为 Repo-Level Prompt Generator （RLPG）的框架来解决这一问题。
+
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/0cc85106-08c1-4026-96d5-ce326a9b5817)
+
+  给定 **prompt 建议列表**、**光标位置**、**关联的存储库**作为输入，prompt 建议分类器（Prompt Proposal Classifier）（PPC）会预测 prompt 建议。其中，PPC 是一个训练好的模型。之后，Prompt Composer 将所选提示提案中的上下文（由 PPC 给出）与 Codex 通常使用的上下文（默认 Codex 上下文）相结合来生成提示。  
+
+## 2.6 code representation
 
 
 # 三、评测相关论文（Papers Related to Evaluation）
@@ -246,9 +277,20 @@ Some paper about code generation.
 ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/7b410a44-108f-475e-ab54-67245aaa547e)
 
 
+- ### [CodeScore: Evaluating Code Generation by Learning Code Execution](https://arxiv.org/pdf/2301.09043.pdf)
 
+  :date: Sun, 22 Jan 2023
+  
+  :school: Author Affiliation :  Peking University
 
+  作者认为以往的代码评价指标（CEM）有很多缺点。以往的代码评价指标（CEM）可分为两类：
+  1. match-based CEMs（基于匹配的CEM），只衡量表面形式的差异，而不管代码的功能等价性；
+  2. execution-based CEMs（基于执行的 CEM），有巨大的执行开销，如，收集昂贵的测试用例、解决繁琐的执行依赖关系和巨大的执行时间；其次，会产生安全问题。
+ 
+  于是作者提出了的新的 CEM：CodeScore，可以在不执行代码的情况下，估算生成代码在测试用例上的通过率；既精准，又不需要执行，所以开销小。作者训练了一个模型来估算这个 score：
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/53779483-cbb0-4ab9-8017-2946b57d24e1)
 
+  
 # 四、NLP相关论文
 ## 4.1 基础论文
 - ### [Transformer : Attention Is All You Need](https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf)  【NIPS 2017】
@@ -304,4 +346,35 @@ Some paper about code generation.
 
   模型在推理阶段，根据上下文进行推理给出输出。
   
+## 4.2 调参方法
+- ### [LOMO：Full Parameter Fine-Tuning for large language models with limited resources](https://arxiv.org/pdf/2306.09782.pdf)
 
+  :date: Fri, 16 Jun 2023
+  
+  :school: Author Affiliation : Fudan University
+
+  最近，高效的参数微调方法，例如 LoRA和 Prefix-tuning，为 LLM 微调提供了解决方案。然而，这些方法并没有为全参数微调提供实用的解决方案，而全参数微调被认为是比参数高效微调更强大的方法。这项工作的目标是探索在资源有限的场景中完成全参数微调技术。
+
+  作者通过各种分析，发现 SGD 在LLM场景下的全参数微调是很有前景的。于是作者进一步的改进 SGD，最终版本称之为 LOMO，可以在 8 块 3090 上微调 65B。与标准方法（DeepSpeed 解决方案）相比，将内存使用量减少到 10.8%。因此，可以在具有 8×RTX 3090（每个具有 24GB 内存）的单台机器上对 65B 模型进行全参数微调。LOMO 技术导致的内存使用量等同于参数加激活和最大梯度张量的使用量，将全参数微调的内存使用量推向了一个极端，使其仅仅相当于推理的使用量。
+
+  作者主要是讨论了 SGD 的一些缺点，并分析这些缺点在 LLM 微调时，不会产生影响，因此可以使用非常节省显存的 SGD 来微调。并且进一步改进了 SGD，使得显存可以更加节省，为全参微调 LLM 提供了方法。
+
+
+## 4.3 数据 sample 方法
+- ### [UNIMAX: FAIRER AND MORE EFFECTIVE LANGUAGE SAMPLING FOR LARGE-SCALE MULTILINGUAL PRETRAINING](https://arxiv.org/pdf/2304.09151.pdf)
+
+  :date: Tue, 18 Apr 2023
+  
+  :school: Author Affiliation : Google Research
+
+  LLM的训练数据集中通常涉及多种语言，由于不同语言的数据可用性差异很大，因此多语言预训练可以被描述为数据严重不平衡的多任务学习。通常，英语是资源最高的语言，其规模比资源较低的语言大几个数量级。因此，设计此类模型的一个关键问题是“语言平衡”问题：应该以什么比例平衡预训练语言数据集?
+
+  作者提出了一个名为 UniMax 的新型语言采样方法，用于大规模多语言预训练模型。该方法能够更公平地分配语言样本，并且能够在明确限制每种语言语料库的重复次数的情况下，减轻对较少语言的过拟合问题。作者进行了一系列实验，发现 UniMax 在各种多语言基准测试中都优于标准的温度采样方法，并且随着模型规模的增加，其好处依然存在。本文还提供了一个更新版本的 mC4 多语言语料库，由 107 种语言的 29 万亿个字符组成，并公开了复现实验的完整代码。
+
+  UNIMAX 采样的第一步是根据训练语料库中的字符数对语言进行排序。然后从字符数最少的语言开始迭代这些语言。每次迭代时，都会检查剩余的字符预算，看看是否可以在不使用超过 N 个 epochs 的任何语言的情况下将其平均分配给其他语言。如果预算可以平均分配，则在各语言之间统一分配。如果没有，则为语言 l 分配价值 N 个 epochs 的字符，剩余的预算就会减少。
+
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/41010778-1ad4-4fe9-aeb3-75a7e6a2c786)
+
+
+
+  
