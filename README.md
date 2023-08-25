@@ -4,7 +4,24 @@ Some paper about code generation.
 
 > If you have any papers you'd like to recommend, you can contact me at :envelope: 839808679@qq.com
 
-
+- [papers\_of\_codegen ](#papers_of_codegen-)
+- [一、大模型汇总（LLMs Summary）](#一大模型汇总llms-summary)
+  - [1.1 开源模型](#11-开源模型)
+  - [1.2 闭源模型](#12-闭源模型)
+  - [1.3 表格汇总](#13-表格汇总)
+- [二、Code 论文（Papers of Code）](#二code-论文papers-of-code)
+  - [2.1 模型水印](#21-模型水印)
+  - [2.2 code debug](#22-code-debug)
+  - [2.3 tokenization](#23-tokenization)
+  - [2.4 code decoding](#24-code-decoding)
+  - [2.5 Code 辅助信息](#25-code-辅助信息)
+  - [2.6 code representation](#26-code-representation)
+- [三、评测相关论文（Papers Related to Evaluation）](#三评测相关论文papers-related-to-evaluation)
+  - [3.1 评测框架](#31-评测框架)
+- [四、NLP相关论文](#四nlp相关论文)
+  - [4.1 基础论文](#41-基础论文)
+  - [4.2 调参方法](#42-调参方法)
+  - [4.3 数据 sample 方法](#43-数据-sample-方法)
 
 # 一、大模型汇总（LLMs Summary）
 ## 1.1 开源模型
