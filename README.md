@@ -250,7 +250,20 @@ Some paper about code generation.
 
   给定 **prompt 建议列表**、**光标位置**、**关联的存储库**作为输入，prompt 建议分类器（Prompt Proposal Classifier）（PPC）会预测 prompt 建议。其中，PPC 是一个训练好的模型。之后，Prompt Composer 将所选提示提案中的上下文（由 PPC 给出）与 Codex 通常使用的上下文（默认 Codex 上下文）相结合来生成提示。  
 
-## 2.6 code representation
+## 2.6 Reinforcement Learning for Code
+- ### [Tuning Models of Code with Compiler-Generated Reinforcement Learning Feedback](https://arxiv.org/pdf/2305.18341.pdf)
+  
+  :date: Thu, 25 May 2023
+  
+  :school: Author Affiliation : Rice University, UT Austin, University of Wisconsin
+
+  LLM 生成的代码经常会会犯一些人类程序员不太可能犯的基本错误，如使用未初始化的变量、违反语言的类型规范、产生非终止循环等。作者认为原因可能是，程序中一个 token 的生成可能是一个改变"世界"（程序世界）的动作，而 "世界" 定义了对未来 token 的解释。更确切地说，程序的执行是以 "环境" 为条件的，而 "环境" 会在无限的时间范围内跟踪范围内的变量集及其类型和其他属性。当 LLM 生成声明和初始化变量以及打开或关闭作用域的 token 时，环境就会发生变化。
+  
+  因此，作者将源代码生成表述为一个连续的游戏——马尔可夫决策过程（Markov decision process，MDP）——自然而然地适应了这种具有长期记忆的不断变化的环境的想法。作者提出了一种名为 "Reinforcement Learning from Compiler Feedback (RLCF)"（编译器反馈强化学习）的新方法。RLCF 是一种粗调方法，通过使用可广泛使用的代码分析工具的判别器自动进行反馈，不需要任何人工参与。在 RLCF 中，LLM 首先要通过对包含自然语言和代码的大型语料库进行自监督学习，以传统的方式进行预训练。这一阶段结束后，LLM 将使用强化学习（RL）被进一步调整。由于这种调整发生在传统的预训练之后，特定任务的微调之前，因此作者称之为粗调（coarse-tuning）。
+
+
+  
+## 2.7 code representation
 
 
 # 三、评测相关论文（Papers Related to Evaluation）
