@@ -4,24 +4,6 @@ Some paper about code generation.
 
 > If you have any papers you'd like to recommend, you can contact me at :envelope: 839808679@qq.com
 
-- [papers\_of\_codegen ](#papers_of_codegen-)
-- [一、大模型汇总（LLMs Summary）](#一大模型汇总llms-summary)
-  - [1.1 开源模型](#11-开源模型)
-  - [1.2 闭源模型](#12-闭源模型)
-  - [1.3 表格汇总](#13-表格汇总)
-- [二、Code 论文（Papers of Code）](#二code-论文papers-of-code)
-  - [2.1 模型水印](#21-模型水印)
-  - [2.2 code debug](#22-code-debug)
-  - [2.3 tokenization](#23-tokenization)
-  - [2.4 code decoding](#24-code-decoding)
-  - [2.5 Code 辅助信息](#25-code-辅助信息)
-  - [2.6 code representation](#26-code-representation)
-- [三、评测相关论文（Papers Related to Evaluation）](#三评测相关论文papers-related-to-evaluation)
-  - [3.1 评测框架](#31-评测框架)
-- [四、NLP相关论文](#四nlp相关论文)
-  - [4.1 基础论文](#41-基础论文)
-  - [4.2 调参方法](#42-调参方法)
-  - [4.3 数据 sample 方法](#43-数据-sample-方法)
 
 # 一、大模型汇总（LLMs Summary）
 ## 1.1 开源模型
@@ -251,6 +233,25 @@ Some paper about code generation.
   给定 **prompt 建议列表**、**光标位置**、**关联的存储库**作为输入，prompt 建议分类器（Prompt Proposal Classifier）（PPC）会预测 prompt 建议。其中，PPC 是一个训练好的模型。之后，Prompt Composer 将所选提示提案中的上下文（由 PPC 给出）与 Codex 通常使用的上下文（默认 Codex 上下文）相结合来生成提示。  
 
 ## 2.6 Reinforcement Learning for Code
+- ### [RLTF: Reinforcement Learning from Unit Test Feedback](https://arxiv.org/pdf/2307.04349.pdf)
+  
+  :date: Mon, 10 Jul 2023
+  
+  :school: Author Affiliation : Tencent
+
+  code : https://github.com/Zyq-scut/RLTF
+
+  最近，越来越多的研究采用强化学习（RL）来提高代码大型语言模型（LLM）的性能。然而，这些强化学习方法只使用离线框架，限制了它们对新样本空间的探索。此外，目前利用单元测试信号的方法比较简单，没有考虑到代码中的特定错误位置。
+  
+  为了解决这些问题，作者提出了 RLTF，即 "单元测试反馈的强化学习"（Reinforcement Learning from Unit Test Feedback），这是一种新颖的在线 RL 框架，利用多粒度单元测试反馈来完善代码 LLM。作者的方法在训练过程中实时生成数据，同时利用细粒度反馈信号引导模型生成更高质量的代码。广泛的实验表明，RLTF 在 APPS 和 MBPP 基准上实现了最先进的性能。
+
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/38db46e6-bc4b-4fa1-a343-74b072f20222)
+
+  总体框架：
+  1. 在线强化学习框架：在训练过程中使用两个具有共享权重的 LLM。其中一个生成目标程序并与编译器交互，生成训练数据对，然后将其存储在在线缓冲区中（持续更新的在线缓冲区确保了用于训练的数据的及时性，从而使模型能够全面探索更广阔的样本空间）。另一个利用 ground truth 数据和在线缓冲区数据计算损失，并通过梯度下降和反向传播更新模型权重（使用从在线缓冲区获得的数据更新模型参数，以进行训练）。
+  2. 在线缓冲区工作流程：在线缓冲区用于保留新生成的数据，以便进行 RL 训练。当收到新数据时，旧数据就会被删除。这里 SL 指的是监督学习，RL 指的是强化学习。
+
+
 - ### [Tuning Models of Code with Compiler-Generated Reinforcement Learning Feedback](https://arxiv.org/pdf/2305.18341.pdf)
   
   :date: Thu, 25 May 2023
