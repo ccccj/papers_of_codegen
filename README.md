@@ -239,7 +239,7 @@ Some paper about code generation.
   
   :school: Author Affiliation : Tencent
 
-  code : https://github.com/Zyq-scut/RLTF
+  :lollipop: code : https://github.com/Zyq-scut/RLTF
 
   最近，越来越多的研究采用强化学习（RL）来提高代码大型语言模型（LLM）的性能。然而，这些强化学习方法只使用离线框架，限制了它们对新样本空间的探索。此外，目前利用单元测试信号的方法比较简单，没有考虑到代码中的特定错误位置。
   
@@ -390,6 +390,23 @@ Some paper about code generation.
 
   作者主要是讨论了 SGD 的一些缺点，并分析这些缺点在 LLM 微调时，不会产生影响，因此可以使用非常节省显存的 SGD 来微调。并且进一步改进了 SGD，使得显存可以更加节省，为全参微调 LLM 提供了方法。
 
+- ###[P-Tuning v2: Prompt Tuning Can Be Comparable to Fine-tuning Universally Across Scales and Tasks](https://arxiv.org/pdf/2110.07602.pdf)  【ACL 2022】
+
+  :date: Thu, 14 Oct 2021
+  
+  :school: Author Affiliation : Tsinghua University, Beijing Academy of Artificial Intelligence (BAAI), Shanghai Qi Zhi Institute
+
+  :lollipop: code : https://github.com/THUDM/P-tuning-v2
+
+  虽然微调可以获得良好的性能，但在训练过程中会消耗内存，因为必须存储所有参数的梯度和优化器状态。此外，在推理过程中为每个任务保存一份模型参数副本也很不方便，因为预训练模型通常都很大。另一种微调方法是 prompt tuning，这是一种只对连续型 prompt 进行 tuning 的想法。Liu  和 Lester 等人提出在原始输入词 embedding 序列中添加可训练的连续嵌入（也称为连续型 prompt）。在训练过程中只更新连续型 prompt 的参数。虽然在许多任务中，prompt tuning 比微调效果更好，但当模型规模不大，特别是参数小于 100 亿时，prompt tuning 的效果仍然不如微调。此外，在一些困难的序列标注任务（如抽取式问题解答）中，prompt tuning 的性能比微调差。
+
+  作者在本文中的主要贡献是展示了一个新颖的实证，即在各种模型规模和 NLU 任务中，经过适当优化的 prompt tuning 可以与微调相媲美。与之前工作中的观察结果不同，该发现揭示了 prompt tuning 在 NLU 中的泛化性和潜力。
+
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/59a0bb7b-e7a4-4ff8-9c80-61d563338b00)
+
+  从图中可以看出，作者提出的优化在于，使用了 Deep Prompt Tuning，并不是只在第一层的 prompt embedding 中可以调整参数，而是在后面每一层都加入了 prompt embedding 并可以调整参数。具体可见下面的表：
+  
+![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/3fc372ec-7b38-4181-b332-c065c219e27b)
 
 ## 4.3 数据 sample 方法
 - ### [UNIMAX: FAIRER AND MORE EFFECTIVE LANGUAGE SAMPLING FOR LARGE-SCALE MULTILINGUAL PRETRAINING](https://arxiv.org/pdf/2304.09151.pdf)
