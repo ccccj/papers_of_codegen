@@ -162,7 +162,8 @@ Some paper about code generation.
   1. 模型生成新代码，然后执行代码并让模型解释代码（当没有单元测试时，反馈信息可以纯粹基于代码解释）;
   2. 代码解释和执行结果构成反馈信息，然后反馈信息被发送回模型以执行更多的调试步骤。
 
-![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/84a9d187-1420-4f66-b87b-b94ec7bbb0f0)
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/a3b96bf1-4dea-4f39-944a-6125a709afe2)
+
 
   在作者的实验中，作者使用用预训练的大型语言模型（code-davinci-002），无需进行微调。根据问题描述，模型首先预测候选程序，然后推断程序的正确性，并为后续调试步骤生成反馈信息。当反馈信息表明预测正确或达到允许的最大调试次数时，调试过程结束。作者设计了三种不同的反馈信息：
   1. SELF-DEBUGGING with Simple Feedback
@@ -186,7 +187,8 @@ Some paper about code generation.
   4. 微调。LM 在这个过滤后的问题-解决方案对的合成数据集上进行了微调。
   5. 重复以上步骤。
   
-  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/ca0ba0a6-ac8e-4658-ae73-70d1b4dac1da)
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/72aa413e-4511-426d-80f1-e9b8fc2f4a26)
+
 
 ## 2.3 tokenization
 - ### [CODEBPE: INVESTIGATING SUBTOKENIZATION OPTIONS FOR LARGE LANGUAGE MODEL PRETRAINING ON SOURCE CODE](https://arxiv.org/pdf/2308.00683.pdf)  【ICLR 2023】
@@ -228,7 +230,8 @@ Some paper about code generation.
 
   作者认为，模型给用户的提示中的相关上下文不仅可以来自当前文件，还可以来自外部，如 import、父类、同一目录下的文件和 API 文档。此外，根据具体情况，相关上下文可能分散在多个位置。由于 LLM 可用于提示的上下文长度有限，选择相关上下文变得越来越重要。作者提出了一个名为 Repo-Level Prompt Generator （RLPG）的框架来解决这一问题。
 
-  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/0cc85106-08c1-4026-96d5-ce326a9b5817)
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/f1e680a8-ade1-4f25-aee2-6d62a48824b0)
+
 
   给定 **prompt 建议列表**、**光标位置**、**关联的存储库**作为输入，prompt 建议分类器（Prompt Proposal Classifier）（PPC）会预测 prompt 建议。其中，PPC 是一个训练好的模型。之后，Prompt Composer 将所选提示提案中的上下文（由 PPC 给出）与 Codex 通常使用的上下文（默认 Codex 上下文）相结合来生成提示。  
 
@@ -245,7 +248,8 @@ Some paper about code generation.
   
   为了解决这些问题，作者提出了 RLTF，即 "单元测试反馈的强化学习"（Reinforcement Learning from Unit Test Feedback），这是一种新颖的在线 RL 框架，利用多粒度单元测试反馈来完善代码 LLM。作者的方法在训练过程中实时生成数据，同时利用细粒度反馈信号引导模型生成更高质量的代码。广泛的实验表明，RLTF 在 APPS 和 MBPP 基准上实现了最先进的性能。
 
-  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/38db46e6-bc4b-4fa1-a343-74b072f20222)
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/9caf8c61-41ce-4a14-a503-5710c93d05c3)
+
 
   总体框架：
   1. 在线强化学习框架：在训练过程中使用两个具有共享权重的 LLM。其中一个生成目标程序并与编译器交互，生成训练数据对，然后将其存储在在线缓冲区中（持续更新的在线缓冲区确保了用于训练的数据的及时性，从而使模型能够全面探索更广阔的样本空间）。另一个利用 ground truth 数据和在线缓冲区数据计算损失，并通过梯度下降和反向传播更新模型权重（使用从在线缓冲区获得的数据更新模型参数，以进行训练）。
@@ -285,7 +289,8 @@ Some paper about code generation.
   再使用差分测试来交叉检查 ground-truth（正确的代码）和 LLM 生成的解决方案的输出。除此之外，作者还设置了一个最小覆盖集，能基本全面覆盖案例，但数量不多，可以加速评估。
 
 
-![EvalPlus](https://github.com/ccccj/papers_of_codegen/assets/33253635/fa7d8888-d1fa-4295-9007-4bc41de25850)
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/74132a29-29ff-4d3c-ae9d-ef27de248f19)
+
 
   作者使用 HUMANEVAL+ 对19种LLM以及各种温度设置进行了全面评估。使用 HUMANEVAL+ 与使用基本 HUMANEVAL 进行评估相比，所有 pass@k 成绩均持续下降。所有模型的 pass@k 平均降低了 13.6-15.3%。CodeGen 降低 18.5%、StarCoder 降低 14.1%、ChatGPT 降低 13.4％ 、GPT-4 减少13.8％.
 
@@ -305,8 +310,7 @@ Some paper about code generation.
   2. 问题描述中的关键字：移除某些关键词且不降低描述的语义，而且丢失的任何信息都应可从上下文的其余部分恢复，在这种情况下模型失效，说明模型依赖于表面词汇 cues 或在训练过程中看到的频繁出现的术语；
   3. prompt 中提供的示例：如果没有示例，模型就无法生成正确的代码。表明模型需要额外的示例来过滤掉错误的解决方案，作者将这种效果与推理能力差联系起来。
      
-![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/7b410a44-108f-475e-ab54-67245aaa547e)
-
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/dc3288dc-b299-438d-914d-b120f59b571a)
 
 - ### [CodeScore: Evaluating Code Generation by Learning Code Execution](https://arxiv.org/pdf/2301.09043.pdf)
 
@@ -319,7 +323,8 @@ Some paper about code generation.
   2. execution-based CEMs（基于执行的 CEM），有巨大的执行开销，如，收集昂贵的测试用例、解决繁琐的执行依赖关系和巨大的执行时间；其次，会产生安全问题。
  
   于是作者提出了的新的 CEM：CodeScore，可以在不执行代码的情况下，估算生成代码在测试用例上的通过率；既精准，又不需要执行，所以开销小。作者训练了一个模型来估算这个 score：
-  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/53779483-cbb0-4ab9-8017-2946b57d24e1)
+
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/dee0bb58-9f84-4844-862e-a8f85059ec6e)
 
   
 # 四、NLP相关论文
@@ -390,7 +395,7 @@ Some paper about code generation.
 
   作者主要是讨论了 SGD 的一些缺点，并分析这些缺点在 LLM 微调时，不会产生影响，因此可以使用非常节省显存的 SGD 来微调。并且进一步改进了 SGD，使得显存可以更加节省，为全参微调 LLM 提供了方法。
 
-- ###[P-Tuning v2: Prompt Tuning Can Be Comparable to Fine-tuning Universally Across Scales and Tasks](https://arxiv.org/pdf/2110.07602.pdf)  【ACL 2022】
+- ### [P-Tuning v2: Prompt Tuning Can Be Comparable to Fine-tuning Universally Across Scales and Tasks](https://arxiv.org/pdf/2110.07602.pdf)  【ACL 2022】
 
   :date: Thu, 14 Oct 2021
   
@@ -406,7 +411,7 @@ Some paper about code generation.
 
   从图中可以看出，作者提出的优化在于，使用了 Deep Prompt Tuning，并不是只在第一层的 prompt embedding 中可以调整参数，而是在后面每一层都加入了 prompt embedding 并可以调整参数。具体可见下面的表：
   
-![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/3fc372ec-7b38-4181-b332-c065c219e27b)
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/b0a01b88-83fd-44c6-af5b-f9a3a7167b67)
 
 ## 4.3 数据 sample 方法
 - ### [UNIMAX: FAIRER AND MORE EFFECTIVE LANGUAGE SAMPLING FOR LARGE-SCALE MULTILINGUAL PRETRAINING](https://arxiv.org/pdf/2304.09151.pdf)
@@ -421,7 +426,8 @@ Some paper about code generation.
 
   UNIMAX 采样的第一步是根据训练语料库中的字符数对语言进行排序。然后从字符数最少的语言开始迭代这些语言。每次迭代时，都会检查剩余的字符预算，看看是否可以在不使用超过 N 个 epochs 的任何语言的情况下将其平均分配给其他语言。如果预算可以平均分配，则在各语言之间统一分配。如果没有，则为语言 l 分配价值 N 个 epochs 的字符，剩余的预算就会减少。
 
-  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/41010778-1ad4-4fe9-aeb3-75a7e6a2c786)
+  ![image](https://github.com/ccccj/papers_of_codegen/assets/33253635/d6933d07-40f2-4aa9-85e9-7b40d5e2567c)
+
 
 
 
